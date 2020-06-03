@@ -1,4 +1,8 @@
 from room import Room
+from player import Player
+from item import Item
+import textwrap
+from textwrap import dedent, indent
 
 # Declare all the rooms
 
@@ -37,7 +41,24 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 
+
+def prompt(message):
+    ded_text = textwrap.dedent(
+        "To make your way through the maze, choose a direction: North[n], East[e], South[s], or West[w]. To pick up an item, use [get]. To drop it, use [drop]. To quit, press [q] ")
+    print("\n***************************************************************\n")
+    print(f"{message}")
+    print(textwrap.fill(ded_text))
+    print("Good Luck!")
+    print("\n***************************************************************\n\n")
+
+
 # Make a new player object that is currently in the 'outside' room.
+new_player_name = input("Enter player name: ")
+player = Player(new_player_name, room["outside"])
+
+prompt(
+    f"Welcome {player.name}")
+
 
 # Write a loop that:
 #
@@ -49,3 +70,27 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+def current_room(arg):
+    dedented_text = textwrap.dedent(f"{arg.current_room.description} ")
+    print("\n=================================================")
+    print(f"\n  -{arg.current_room.name}- ")
+    print(dedented_text)
+
+
+command = ""
+
+while command != "Q":
+    current_room(player)
+    command = input(
+        f"\n{player.name}, what will you do?: ")
+    player_action = command.lower().split()
+    if len(player_action) == 1:
+        if command == "n" or command == 's' or command == 'e' or command == 'w':
+            player.move(command)
+        elif command == "q":
+            print("\n Leaving so soon?")
+            break
+        else:
+            print(" \nPlease choose a valid command\n")
