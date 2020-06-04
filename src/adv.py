@@ -120,7 +120,16 @@ prompt(text_color(f"Welcome {player.name}!", bcolors.HEADER))
 
 command = ""
 while command != "q":
-    current_room(player)
+
+    if player.current_room.is_dark == False:
+        current_room(player)
+    elif player.current_room.is_dark == True:
+        if player.check_torch() == False:
+            current_room(player)
+        else:
+            pass
+    else:
+        print("Its pitch dark!")
     command = input(
         f"\n{player.name}, what will you do?: ").lower().strip()
     player_action = command.split()

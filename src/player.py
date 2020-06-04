@@ -1,7 +1,7 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
 from bcolors import bcolors
-from helpers import text_color
+from helpers import text_color, current_room
 
 
 class Player:
@@ -53,14 +53,16 @@ class Player:
             if len(self.items) > 0:
                 for item in self.items:
                     if "Torch" in item.name:
+                        self.current_room.is_dark == False
                         print(text_color(
                             "Aha! You've pulled the torch from your bag! The room explodes into light", bcolors.WARNING))
+                        return self.current_room.is_dark == False
                     else:
                         print(text_color(
-                            f"\nIts so dark. Sure would be good to have a torch", bcolors.HEADER))
+                            f"\nIts pitch black! Sure would be good to have a torch", bcolors.HEADER))
             else:
                 print(text_color(
-                    f"\nIt's so dark. Sure would be good to have a torch", bcolors.HEADER))
+                    f"\nIt's pitch black! Sure would be good to have a torch", bcolors.HEADER))
         else:
             print(text_color(
                 f"\nIt's nice and bright here. That is comforting", bcolors.WARNING))
