@@ -1,4 +1,5 @@
 from bcolors import bcolors
+from helpers import text_color
 
 
 class Item:
@@ -7,7 +8,8 @@ class Item:
         self.description = description
 
     def on_take(self):
-        print(f"{bcolors.OKGREEN}You've picked up the {self.name}!{bcolors.ENDC}")
+        print(text_color(
+            f"You've picked up the {self.name}!", bcolors.OKGREEN))
 
     def on_drop(self):
-        print(f"You've dropped the {self.name}")
+        print(text_color(f"You've dropped the {self.name}", bcolors.OKGREEN))

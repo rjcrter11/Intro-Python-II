@@ -1,6 +1,7 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
 from bcolors import bcolors
+from helpers import text_color
 
 
 class Room:
@@ -19,10 +20,10 @@ class Room:
 
     def item_check(self):
         if not self.items:
-            print(
-                f"\n{bcolors.OKGREEN}Items:{bcolors.ENDC} There are no useful items here\n")
+            print(text_color(f"\nItems: ", bcolors.OKGREEN) +
+                  "There are no useful items here\n")
         else:
-            print(f"\n{bcolors.OKGREEN}Items in {self.name}:{bcolors.ENDC}")
+            print(text_color(f"\nItems in {self.name}:", bcolors.OKGREEN))
             for item in self.items:
                 print(
                     f"{item.name} {bcolors.OKGREEN}:{bcolors.ENDC} {item.description}")

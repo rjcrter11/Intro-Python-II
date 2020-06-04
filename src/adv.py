@@ -4,6 +4,7 @@ from item import Item
 import textwrap
 from bcolors import bcolors
 from textwrap import dedent, indent
+from helpers import current_room, prompt, wrap, on_quit, text_color
 
 
 # Declare all the rooms
@@ -37,7 +38,7 @@ may be your last. Out beyond the bridge, you must choose to head east or west.""
  one(or a couple?) will surely make you feel safer. It looks like there's another room off to the north."""),
 
     'hallway': Room('Torch-lit Hallway', """The hallway is long and off-kilter. You should probably
-grab one of the torches before you head to through the door  to the west"""),
+grab one of the torches before you head to through the door  to the west""", False),
 
     'tunnel': Room('Pitch Black Tunnel', """The only way out is through, right? Head north
 if you aren't too afraid""")
@@ -72,15 +73,7 @@ room['treasure'].s_to = room['narrow']
 #
 
 
-# Text wrapping for better line breaks
-
-def wrapper(text):
-    wrapped = textwrap.fill(textwrap.dedent(
-        text), width=50, initial_indent=" ", subsequent_indent=" ")
-    return wrapped
-
 # Item description strings to feed to wrapper function
-
 
 item_desc1 = "Use the pointy end."
 item_desc2 = "Ooh, she thicc"
@@ -92,11 +85,11 @@ item_desc5 = "This should help you see in the dark"
 # Declare Items
 
 items = {
-    "sword": Item("Sword", wrapper(item_desc1)),
-    "shield": Item("Shield", wrapper(item_desc2)),
-    "bow": Item("Bow", wrapper(item_desc3)),
-    "soda": Item("Soda", wrapper(item_desc4)),
-    'torch': Item("Torch", wrapper(item_desc5))
+    "sword": Item("Sword", wrap(item_desc1, " ", " ")),
+    "shield": Item("Shield", wrap(item_desc2, " ", " ")),
+    "bow": Item("Bow", wrap(item_desc3, " ", " ")),
+    "soda": Item("Soda", wrap(item_desc4, " ", " ")),
+    'torch': Item("Torch", wrap(item_desc5, " ", " "))
 }
 
 # Add items to rooms
@@ -107,34 +100,12 @@ room['narrow'].items.append(items['bow'])
 room['treasure'].items.append(items['soda'])
 room['hallway'].items.append(items['torch'])
 
-# Opening message for directions
-
-ded_text = textwrap.dedent(
-    "To make your way through the maze, choose a direction: North[n], East[e], South[s], or West[w].")
-ded_text2 = textwrap.dedent(
-    "To pick up an item, use [get] or [pickup]. To drop it, use [drop] or [leave]. To check your inventory, type [bag]")
-ded_text3 = textwrap.dedent("To quit, press [q]")
-ded_text4 = textwrap.dedent("For help, type [help]")
-
-
-def prompt(message):
-    print(f"\n{bcolors.OKGREEN}***************************************************************{bcolors.ENDC}\n")
-    print(f"{message} \n")
-    print(textwrap.fill(ded_text, width=60))
-    print(textwrap.fill(ded_text2))
-    print(textwrap.fill(ded_text3))
-    print(textwrap.fill(ded_text4))
-    print("Good Luck!")
-    print(f"\n{bcolors.OKGREEN}***************************************************************{bcolors.ENDC}\n\n")
-
 
 # Make a new player object that is currently in the 'outside' room.
 new_player_name = input(f"\nEnter player name: ")
 player = Player(new_player_name, room["outside"])
 
-prompt(f"{bcolors.HEADER}Welcome {player.name}!{bcolors.ENDC}")
-#is_dark = True
-
+prompt(text_color(f"Welcome {player.name}!", bcolors.HEADER))
 # Write a loop that:
 #
 # * Prints the current room name
@@ -145,19 +116,6 @@ prompt(f"{bcolors.HEADER}Welcome {player.name}!{bcolors.ENDC}")
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-
-# Takes current room name and description for printing
-
-
-def current_room(arg):
-    dedented_text = textwrap.dedent(f"{arg.current_room.description} ")
-    print(
-        f"\n{bcolors.OKBLUE}================================================={bcolors.ENDC}")
-    print(f"\n {bcolors.BOLD}  -{arg.current_room.name}- {bcolors.ENDC}")
-    print(dedented_text)
-    player.current_room.item_check()
-    arg.check_torch()
-    print(f"\n{bcolors.OKBLUE}================================================={bcolors.ENDC}\n")
 
 
 command = ""
@@ -174,13 +132,7 @@ while command != "q":
         elif command == 'help':
             prompt("Instructions: ")
         elif command == "q":
-            print(
-                f"{bcolors.HEADER}============================================={bcolors.ENDC}\n")
-            print(textwrap.fill(textwrap.dedent(
-                f"\n{bcolors.BOLD}Ah, the real treasure was inside you this whole time.{bcolors.ENDC}"), width=50, subsequent_indent=" "))
-            print(f"\n{bcolors.BOLD}              Buh bye now.")
-            print(
-                f"\n{bcolors.HEADER}============================================={bcolors.ENDC}")
+            on_quit()
             break
         else:
             print(" \nPlease choose a valid command\n")

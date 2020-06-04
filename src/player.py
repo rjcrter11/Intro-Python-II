@@ -1,6 +1,7 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
 from bcolors import bcolors
+from helpers import text_color
 
 
 class Player:
@@ -13,7 +14,8 @@ class Player:
         if getattr(self.current_room, f"{direction}_to") is not None:
             self.current_room = getattr(self.current_room, f"{direction}_to")
         else:
-            print("\n    There is no path forward in this direction.\n")
+            print(text_color(
+                f"\n    There is no path forward in this direction.\n", bcolors.OKGREEN))
 
     def get(self, item):
         if len(self.current_room.items) > 0 and item not in self.items:
@@ -21,9 +23,10 @@ class Player:
             self.current_room.items.remove(item)
             item.on_take()
         elif item in self.items:
-            print(f"You already have the {item.name} in your inventory")
+            print(text_color(
+                f"You already have the {item.name} in your inventory", bcolors.OKGREEN))
         else:
-            print("That item is not here")
+            print(text_color("That item is not here", bcolors.OKGREEN))
 
     def drop(self, item):
         if len(self.items) > 0 and item in self.items:
@@ -31,17 +34,18 @@ class Player:
             self.current_room.items.append(item)
             item.on_drop()
         else:
-            print(f"There is no {item.name} in your inventory")
+            print(text_color(
+                f"There is no {item.name} in your inventory", bcolors.OKGREEN))
 
     def check_bag(self):
         if len(self.items) > 0:
-            print("\nWhat's in your bag: ")
+            print("\n" + text_color("What's in your bag:", bcolors.OKGREEN))
             for i, item in enumerate(self.items):
                 output = ""
                 output += " " + str(i + 1) + ". " + item.name
                 print(output)
         else:
-            print("You have no items in your bag")
+            print(text_color("You have no items in your bag", bcolors.OKGREEN))
 
     def check_torch(self):
 
@@ -49,14 +53,14 @@ class Player:
             if len(self.items) > 0:
                 for item in self.items:
                     if "Torch" in item.name:
-                        print(
-                            f"{bcolors.WARNING}Aha! You've pulled the torch from your bag! The room explodes into light{bcolors.ENDC}")
+                        print(text_color(
+                            "Aha! You've pulled the torch from your bag! The room explodes into light", bcolors.WARNING))
                     else:
-                        print(
-                            f"\n{bcolors.HEADER}Its so dark. Sure would be good to have a torch{bcolors.ENDC}")
+                        print(text_color(
+                            f"\nIts so dark. Sure would be good to have a torch", bcolors.HEADER))
             else:
-                print(
-                    f"\n{bcolors.HEADER}It's so dark. Sure would be good to have a torch{bcolors.ENDC}")
+                print(text_color(
+                    f"\nIt's so dark. Sure would be good to have a torch", bcolors.HEADER))
         else:
-            print(
-                f"\n{bcolors.WARNING}It's nice and bright here. That is comforting{bcolors.ENDC}")
+            print(text_color(
+                f"\nIt's nice and bright here. That is comforting", bcolors.WARNING))
