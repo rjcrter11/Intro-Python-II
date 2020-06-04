@@ -1,5 +1,7 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
+from bcolors import bcolors
+
 
 class Player:
     def __init__(self, name, current_room):
@@ -21,7 +23,7 @@ class Player:
         elif item in self.items:
             print(f"You already have the {item.name} in your inventory")
         else:
-            print("Please use a valid command")
+            print("That item is not here")
 
     def drop(self, item):
         if len(self.items) > 0 and item in self.items:
@@ -40,3 +42,21 @@ class Player:
                 print(output)
         else:
             print("You have no items in your bag")
+
+    def check_torch(self):
+
+        if self.current_room.is_dark == True:
+            if len(self.items) > 0:
+                for item in self.items:
+                    if "Torch" in item.name:
+                        print(
+                            f"{bcolors.WARNING}Aha! You've pulled the torch from your bag! The room explodes into light{bcolors.ENDC}")
+                    else:
+                        print(
+                            f"\n{bcolors.HEADER}Its so dark. Sure would be good to have a torch{bcolors.ENDC}")
+            else:
+                print(
+                    f"\n{bcolors.HEADER}It's so dark. Sure would be good to have a torch{bcolors.ENDC}")
+        else:
+            print(
+                f"\n{bcolors.WARNING}It's nice and bright here. That is comforting{bcolors.ENDC}")
