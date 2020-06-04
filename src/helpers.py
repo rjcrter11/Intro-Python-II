@@ -6,15 +6,16 @@ from textwrap import dedent
 
 
 def current_room(arg):
-    dedented_text = textwrap.dedent(f"{arg.current_room.description} ")
+    dedented_text = textwrap.fill(textwrap.dedent(
+        f"{arg.current_room.description} "), width=50)
     print(text_color(
-        f"\n=================================================", bcolors.OKBLUE))
+        f"\n=======================================================", bcolors.OKBLUE))
     print(text_color(f"\n   -{arg.current_room.name}- ", bcolors.BOLD))
     print(dedented_text)
     arg.current_room.item_check()
     arg.check_torch()
     print(text_color(
-        f"\n=================================================", bcolors.OKBLUE))
+        f"\n=======================================================", bcolors.OKBLUE))
 
 
 # Opening message for directions

@@ -2,6 +2,8 @@
 # currently.
 from bcolors import bcolors
 from helpers import text_color, current_room
+import textwrap
+from textwrap import dedent
 
 
 class Player:
@@ -18,15 +20,18 @@ class Player:
                 f"\n    There is no path forward in this direction.\n", bcolors.OKGREEN))
 
     def get(self, item):
-        if len(self.current_room.items) > 0 and item not in self.items:
-            self.items.append(item)
-            self.current_room.items.remove(item)
-            item.on_take()
-        elif item in self.items:
-            print(text_color(
-                f"You already have the {item.name} in your inventory", bcolors.OKGREEN))
+        if self.current_room.is_dark == False or self.check_torch() == False:
+            if len(self.current_room.items) > 0 and item not in self.items:
+                self.items.append(item)
+                self.current_room.items.remove(item)
+                item.on_take()
+            elif item in self.items:
+                print(text_color(
+                    f"You already have the {item.name} in your inventory", bcolors.OKGREEN))
+            else:
+                print(text_color("That item is not here", bcolors.OKGREEN))
         else:
-            print(text_color("That item is not here", bcolors.OKGREEN))
+            print("Lol. Good luck finding that in the dark")
 
     def drop(self, item):
         if len(self.items) > 0 and item in self.items:
@@ -54,15 +59,21 @@ class Player:
                 for item in self.items:
                     if "Torch" in item.name:
                         self.current_room.is_dark == False
-                        print(text_color(
-                            "Aha! You've pulled the torch from your bag! The room explodes into light", bcolors.WARNING))
+                        print(textwrap.fill(text_color(
+                            "Aha! You've pulled the torch from your bag! The room explodes into light", bcolors.WARNING), width=60))
                         return self.current_room.is_dark == False
                     else:
+                        print(
+                            "------------------------------------------------------")
                         print(text_color(
-                            f"\nIts pitch black! Sure would be good to have a torch", bcolors.HEADER))
+                            f"Its pitch black! Sure would be good to have a torch", bcolors.HEADER))
+                        print(
+                            f"------------------------------------------------------\n")
             else:
+                print("------------------------------------------------------")
                 print(text_color(
                     f"\nIt's pitch black! Sure would be good to have a torch", bcolors.HEADER))
+                print("------------------------------------------------------")
         else:
             print(text_color(
                 f"\nIt's nice and bright here. That is comforting", bcolors.WARNING))
