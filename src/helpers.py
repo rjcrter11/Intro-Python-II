@@ -10,7 +10,7 @@ def current_room(arg):
         f"{arg.current_room.description} "), width=50)
     print(text_color(
         f"\n=======================================================", bcolors.OKBLUE))
-    print(text_color(f"\n   -{arg.current_room.name}- ", bcolors.BOLD))
+    print(text_color(f"\n-{arg.current_room.name}-", bcolors.BOLD))
     print(dedented_text)
     arg.current_room.item_check()
     arg.check_torch()

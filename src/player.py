@@ -57,23 +57,23 @@ class Player:
         if self.current_room.is_dark == True:
             if len(self.items) > 0:
                 for item in self.items:
-                    if "Torch" in item.name:
+                    if "Torch" in item.name or "Lantern" in item.name:
                         self.current_room.is_dark == False
                         print(textwrap.fill(text_color(
                             "Aha! You've pulled the torch from your bag! The room explodes into light", bcolors.WARNING), width=60))
                         return self.current_room.is_dark == False
                     else:
                         print(
-                            "------------------------------------------------------")
+                            "---------------------------------------------------------------")
                         print(text_color(
-                            f"Its pitch black! Sure would be good to have a torch", bcolors.HEADER))
+                            f"Its pitch black! Sure would be nice to have that lantern, huh?", bcolors.HEADER))
                         print(
-                            f"------------------------------------------------------\n")
+                            f"---------------------------------------------------------------\n")
             else:
-                print("------------------------------------------------------")
+                print("---------------------------------------------------------------")
                 print(text_color(
-                    f"\nIt's pitch black! Sure would be good to have a torch", bcolors.HEADER))
-                print("------------------------------------------------------")
+                    f"It's pitch black! Sure would be nice to have that lantern, huh?", bcolors.HEADER))
+                print("---------------------------------------------------------------")
         else:
             print(text_color(
                 f"\nIt's nice and bright here. That is comforting", bcolors.WARNING))

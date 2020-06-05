@@ -5,6 +5,7 @@ import textwrap
 from bcolors import bcolors
 from textwrap import dedent, indent
 from helpers import current_room, prompt, wrap, on_quit, text_color
+import pyfiglet
 
 
 # Declare all the rooms
@@ -19,7 +20,7 @@ passages run north and east.""", False),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm.""", False),
+the distance. An ancient looking bridge crosses the chasm.""", False),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air."""),
@@ -31,14 +32,14 @@ earlier adventurers. The only exit is to the south.""", False),
     'graveyard': Room("Dark Cemetary", """An unsettling fog hovers at your feet, and an eery glow
 pulses in the distance. Maybe best to go back the way you came."""),
 
-    'bridge': Room('Rickety Bridge', """You've found an old bridge across the chasm. The next step
-may be your last. Out beyond the bridge, you must choose to head east or west."""),
+    'bridge': Room('Rickety Bridge', """You've arrived at the old bridge across the chasm. The next step
+may be your last. At the end of the bridge, you must choose to head east or west."""),
 
     'armory': Room('The Armory', """It's full of weapons. They are covered in dust, but grabbing
  one(or a couple?) will surely make you feel safer. It looks like there's another room off to the north."""),
 
     'hallway': Room('Torch-lit Hallway', """The hallway is long and off-kilter. You should probably
-grab one of the torches before you head to through the door  to the west""", False),
+grab one of the torches before you head to through the door to the west""", False),
 
     'tunnel': Room('Pitch Black Tunnel', """The only way out is through, right? Head north
 if you aren't too afraid""")
@@ -79,17 +80,18 @@ item_desc1 = "Use the pointy end."
 item_desc2 = "Ooh, she thicc"
 item_desc3 = "Let's not pretend. You can't pull that string all the way back"
 item_desc4 = "Score. Who left this tasty DP here? It ain't even flat. Maybe this was the real treasure all along"
-item_desc5 = "This should help you see in the dark"
-
+item_desc5 = "Well. If you were foolish enough not to bring that lantern along. Better grab one of these torches"
+item_desc6 = "Hm. Someone left a lamp here. Seems like a good idea to pick it up. It could be useful later"
 
 # Declare Items
 
 items = {
-    "sword": Item("Sword", wrap(item_desc1, " ", " ")),
-    "shield": Item("Shield", wrap(item_desc2, " ", " ")),
-    "bow": Item("Bow", wrap(item_desc3, " ", " ")),
-    "soda": Item("Soda", wrap(item_desc4, " ", " ")),
-    'torch': Item("Torch", wrap(item_desc5, " ", " "))
+    "sword": Item("Sword", wrap(item_desc1, "", " ")),
+    "shield": Item("Shield", wrap(item_desc2, "", " ")),
+    "bow": Item("Bow", wrap(item_desc3, "", " ")),
+    "soda": Item("Soda", wrap(item_desc4, "", "       ")),
+    'torch': Item("Torch", wrap(item_desc5, "", "        ")),
+    'lantern': Item("Lantern", wrap(item_desc6, "", "          "))
 }
 
 # Add items to rooms
@@ -99,7 +101,11 @@ room['overlook'].items.append(items['shield'])
 room['narrow'].items.append(items['bow'])
 room['treasure'].items.append(items['soda'])
 room['hallway'].items.append(items['torch'])
+room['foyer'].items.append(items['lantern'])
 
+
+banner = pyfiglet.figlet_format("Cave Adventure", font="doom")
+print(text_color(banner, bcolors.OKGREEN))
 
 # Make a new player object that is currently in the 'outside' room.
 new_player_name = input(f"\nEnter player name: ")
